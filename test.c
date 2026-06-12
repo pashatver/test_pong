@@ -32,14 +32,14 @@ static void game_start(void) {
 }
 
 static void left_paddle_move(int dir) {
-    left_paddle_y += dir;
+    left_paddle_y  = left_paddle_y + dir;
     if (left_paddle_y < 1) left_paddle_y = 1;
     if (left_paddle_y + paddle_size - 1 > field_heigth - 2)
         left_paddle_y = field_heigth - 2 - paddle_size + 1;
 }
 
 static void right_paddle_move(int dir) {
-    right_paddle_y += dir;
+    right_paddle_y = right_paddle_y + dir;
     if (right_paddle_y < 1) right_paddle_y = 1;
     if (right_paddle_y + paddle_size - 1 > field_heigth - 2)
         right_paddle_y = field_heigth - 2 - paddle_size + 1;
