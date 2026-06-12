@@ -100,8 +100,10 @@ static void draw(void) {
 
     printf("\033[H");
 
-    for (y = 0; y < field_heigth; y++) {
-        for (x = 0; x < field_weidth; x++) {
+    y = 0;
+    while (y < field_heigth) {
+        x = 0;
+        while (x < field_weidth) {
             symbol = ' ';
             if (y == 0 || y == field_heigth - 1) {
                 if (y == 0 && x == field_weidth / 2 - 5) {
@@ -122,30 +124,35 @@ static void draw(void) {
             } else if (x == ball_x && y == ball_y) {
                 symbol = 'O';
             } else {
-                for (i = 0; i < paddle_size; i++) {
+                i = 0;
+                while (i < paddle_size) {
                     if (x == 1 && y == left_paddle_y + i) {
                         symbol = '#';
                         break;
                     }
+                    i++;
                 }
                 if (symbol == ' ') {
-                    for (i = 0; i < paddle_size; i++) {
+                    i = 0;
+                    while (i < paddle_size) {
                         if (x == field_weidth - 2 && y == right_paddle_y + i) {
                             symbol = '#';
                             break;
                         }
+                        i++;
                     }
                 }
             }
             putchar(symbol);
+            x++;
         }
         putchar('\n');
+        y++;
     }
 }
 
 int main(void) {
     int tmp;
-    int key;
 
     game_start();
     draw();
@@ -153,7 +160,7 @@ int main(void) {
     while (is_running) {
         printf("Ход (A/Z - ракетка 1, K/M - ракетка 2, Space - пропуск): ");
 
-        key = getchar();
+        int key = getchar();
 
         if (key == '\n' || key == '\r') continue;
 
