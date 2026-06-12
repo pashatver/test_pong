@@ -98,7 +98,7 @@ static void draw(void) {
     int i;
     char symbol;
 
-    printf("\033[H");
+    printf("\033[2J\033[H");
 
     y = 0;
     while (y < field_heigth) {
@@ -153,6 +153,7 @@ static void draw(void) {
 
 int main(void) {
     int tmp;
+    int key;
 
     game_start();
     draw();
@@ -160,29 +161,35 @@ int main(void) {
     while (is_running) {
         printf("Ход (A/Z - ракетка 1, K/M - ракетка 2, Space - пропуск): ");
 
-        int key = getchar();
+        key = getchar();
 
-        if (key == '\n' || key == '\r') continue;
+        if (key != '\n' && key != '\r') {
+            while ((tmp = getchar()) != '\n' && tmp != EOF) {
+            }
 
-        while ((tmp = getchar()) != '\n' && tmp != EOF) {
+            if (key == 'A' || key == 'a') {
+                left_paddle_move(-1);
+                game_step();
+                draw();
+            } else if (key == 'Z' || key == 'z') {
+                left_paddle_move(+1);
+                game_step();
+                draw();
+            } else if (key == 'K' || key == 'k') {
+                right_paddle_move(-1);
+                game_step();
+                draw();
+            } else if (key == 'M' || key == 'm') {
+                right_paddle_move(+1);
+                game_step();
+                draw();
+            } else if (key == ' ') {
+                game_step();
+                draw();
+            } else {
+                printf("Неверный ввод. Используйте A/Z, K/M или Space.\n");
+            }
         }
-
-        if (key == 'A' || key == 'a')
-            left_paddle_move(-1);
-        else if (key == 'Z' || key == 'z')
-            left_paddle_move(+1);
-        else if (key == 'K' || key == 'k')
-            right_paddle_move(-1);
-        else if (key == 'M' || key == 'm')
-            right_paddle_move(+1);
-        else if (key == ' ') {
-        } else {
-            printf("Неверный ввод. Используйте A/Z, K/M или Space.\n");
-            continue;
-        }
-
-        game_step();
-        draw();
     }
 
     if (player1_score >= win_score)
