@@ -1,54 +1,52 @@
-void draw(void) {
+static void draw(void) {
     int x;
     int y;
+    int i;
     char symbol;
 
-    y = 0;
-    while (y < field_heigth) {
-        x = 0;
-        while (x < field_weidth) {
-            symbol = ' '; 
+    printf("\033[2J\033[H");
 
-            // 1. Верхняя и нижняя границы (Рамка + Счет)
-            if (y == 0 || y == field_heigth - 1) {
-                if (y == 0 && x == field_weidth / 2 - 5) { 
+    y = 0;
+    while (y < field_height) {
+        x = 0;
+        while (x < field_width) {
+            symbol = ' ';
+            if (y == 0 || y == field_height - 1) {
+                if (y == 0 && x == field_width / 2 - 5) {
                     symbol = '0' + player1_score / 10;
-                } else if (y == 0 && x == field_weidth / 2 - 4) {
-                    symbol = '0' + player1_score % 10; 
-                } else if (y == 0 && x == field_weidth / 2 - 3) {
+                } else if (y == 0 && x == field_width / 2 - 4) {
+                    symbol = '0' + player1_score % 10;
+                } else if (y == 0 && x == field_width / 2 - 3) {
                     symbol = ':';
-                } else if (y == 0 && x == field_weidth / 2 - 2) {
+                } else if (y == 0 && x == field_width / 2 - 2) {
                     symbol = '0' + player2_score / 10;
-                } else if (y == 0 && x == field_weidth / 2 - 1) {
+                } else if (y == 0 && x == field_width / 2 - 1) {
                     symbol = '0' + player2_score % 10;
                 } else {
                     symbol = '-';
                 }
-            } 
-            // 2. Левая и правая границы рамки
-            else if (x == 0 || x == field_weidth - 1) {
-                symbol = '|';                
-            } 
-            // 3. Мяч
-            else if (x == ball_x && y == ball_y) {
+            } else if (x == 0 || x == field_width - 1) {
+                symbol = '|';
+            } else if (x == ball_x && y == ball_y) {
                 symbol = 'O';
-            } 
-            // 4. Ракетки (без циклов и без break)
-            else {
-                // Левая ракетка: проверяем, лежит ли y между left_paddle_y и left_paddle_y + paddle_size
-                if (x == 1 && y >= left_paddle_y && y < left_paddle_y + paddle_size) { 
-                    symbol = '#'; 
+            } else {
+                i = 0;
+                while (i < paddle_size && symbol == ' ') {
+                    if (x == 1 && y == left_paddle_y + i)
+                        symbol = '#';
+                    i++;
                 }
-                // Правая ракетка: проверяем аналогичный диапазон по высоте
-                else if (x == field_weidth - 2 && y >= right_paddle_y && y < right_paddle_y + paddle_size) { 
-                    symbol = '#'; 
+                i = 0;
+                while (i < paddle_size && symbol == ' ') {
+                    if (x == field_width - 2 && y == right_paddle_y + i)
+                        symbol = '#';
+                    i++;
                 }
             }
-
             putchar(symbol);
-            x++; 
+            x++;
         }
         putchar('\n');
-        y++; 
+        y++;
     }
 }
