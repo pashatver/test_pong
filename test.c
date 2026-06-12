@@ -15,7 +15,7 @@ int player1_score;
 int player2_score;
 int is_running;
 
-void game_start(void) {
+static void game_start(void) {
     field_weidth = 80;
     field_heigth = 25;
     paddle_size = 3;
@@ -32,7 +32,7 @@ void game_start(void) {
     is_running   = 1;
 }
 
-void left_paddle_move(int dir) {
+static void left_paddle_move(int dir) {
     left_paddle_y += dir;
     if (left_paddle_y < 1)
         left_paddle_y = 1;
@@ -40,7 +40,7 @@ void left_paddle_move(int dir) {
         left_paddle_y = field_heigth - 2 - paddle_size + 1;
 }
 
-void right_paddle_move(int dir) {
+static void right_paddle_move(int dir) {
     right_paddle_y += dir;
     if (right_paddle_y < 1)
         right_paddle_y = 1;
@@ -48,20 +48,20 @@ void right_paddle_move(int dir) {
         right_paddle_y = field_heigth - 2 - paddle_size + 1;
 }
 
-int paddle_touch(int by, int py) {
+static int paddle_touch(int by, int py) {
     if (by >= py && by < py + paddle_size) {
         return 1;
     } else return 0;
 }
 
-void reset_ball(int dx) {
+static void reset_ball(int dx) {
     ball_x  = field_weidth / 2;
     ball_y  = field_heigth / 2;
     ball_dir_x = dx;
     ball_dir_y = 1;
 }
 
-void game_step(void) {
+static void game_step(void) {
     ball_x = ball_x + ball_dir_x;
     ball_y = ball_y + ball_dir_y;
 
@@ -89,7 +89,7 @@ void game_step(void) {
     }
 }
 
-void draw(void) {
+static void draw(void) {
     int x;
     int y;
     int i;
@@ -144,7 +144,7 @@ void draw(void) {
 }
 
 int main(void) {
-    int key;
+  
     int tmp;
 
     game_start();
@@ -153,7 +153,7 @@ int main(void) {
     while (is_running) {
         printf("Ход (A/Z - ракетка 1, K/M - ракетка 2, Space - пропуск): ");
 
-        key = getchar();
+        int key = getchar();
 
         if (key == '\n' || key == '\r') {
             draw(); 
