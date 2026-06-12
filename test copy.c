@@ -98,12 +98,10 @@ static void draw(void) {
     int i;
     char symbol;
 
-    printf("\033[2J\033[H");
+    printf("\033[H");
 
-    y = 0;
-    while (y < field_height) {
-        x = 0;
-        while (x < field_width) {
+    for (y = 0; y < field_height; y++) {
+        for (x = 0; x < field_width; x++) {
             symbol = ' ';
             if (y == 0 || y == field_height - 1) {
                 if (y == 0 && x == field_width / 2 - 5) {
@@ -124,28 +122,31 @@ static void draw(void) {
             } else if (x == ball_x && y == ball_y) {
                 symbol = 'O';
             } else {
-                i = 0;
-                while (i < paddle_size && symbol == ' ') {
-                    if (x == 1 && y == left_paddle_y + i) symbol = '#';
-                    i++;
+                for (i = 0; i < paddle_size; i++) {
+                    if (x == 1 && y == left_paddle_y + i) {
+                        symbol = '#';
+                        break;
+                    }
                 }
-                i = 0;
-                while (i < paddle_size && symbol == ' ') {
-                    if (x == field_width - 2 && y == right_paddle_y + i) symbol = '#';
-                    i++;
+                if (symbol == ' ') {
+                    for (i = 0; i < paddle_size; i++) {
+                        if (x == field_width - 2 && y == right_paddle_y + i) {
+                            symbol = '#';
+                            break;
+                        }
+                    }
                 }
             }
             putchar(symbol);
-            x++;
         }
         putchar('\n');
-        y++;
     }
 }
 
 int main(void) {
     int tmp;
     int key;
+    int valid;
 
     game_start();
     draw();
@@ -154,40 +155,44 @@ int main(void) {
         printf("Ход (A/Z - ракетка 1, K/M - ракетка 2, Space - пропуск): ");
 
         key = getchar();
+        valid = 0;
 
-        if (key != '\n' && key != '\r') {
-            while ((tmp = getchar()) != '\n' && tmp != EOF) {
-            }
+        if (key == '\n' || key == '\r') {
+            /* игнорируем Enter */
+        } else {
+            while ((tmp = getchar()) != '\n' && tmp != EOF) {}
 
             if (key == 'A' || key == 'a') {
                 left_paddle_move(-1);
-                game_step();
-                draw();
+                valid = 1;
             } else if (key == 'Z' || key == 'z') {
                 left_paddle_move(+1);
-                game_step();
-                draw();
+                valid = 1;
             } else if (key == 'K' || key == 'k') {
                 right_paddle_move(-1);
-                game_step();
-                draw();
+                valid = 1;
             } else if (key == 'M' || key == 'm') {
                 right_paddle_move(+1);
-                game_step();
-                draw();
+                valid = 1;
             } else if (key == ' ') {
-                game_step();
-                draw();
+                valid = 1;
             } else {
                 printf("Неверный ввод. Используйте A/Z, K/M или Space.\n");
+            }
+
+            if (valid == 1) {
+                game_step();
+                draw();
             }
         }
     }
 
     if (player1_score >= win_score)
-        printf("\n*** Поздравляем! Победил Игрок 1 со счётом %d:%d! ***\n", player1_score, player2_score);
+        printf("\n*** Поздравляем! Победил Игрок 1 со счётом %d:%d! ***\n",
+               player1_score, player2_score);
     else
-        printf("\n*** Поздравляем! Победил Игрок 2 со счётом %d:%d! ***\n", player1_score, player2_score);
+        printf("\n*** Поздравляем! Победил Игрок 2 со счётом %d:%d! ***\n",
+               player1_score, player2_score);
 
     return 0;
 }

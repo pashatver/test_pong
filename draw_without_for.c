@@ -32,14 +32,12 @@ static void draw(void) {
             } else {
                 i = 0;
                 while (i < paddle_size && symbol == ' ') {
-                    if (x == 1 && y == left_paddle_y + i)
-                        symbol = '#';
+                    if (x == 1 && y == left_paddle_y + i) symbol = '#';
                     i++;
                 }
                 i = 0;
                 while (i < paddle_size && symbol == ' ') {
-                    if (x == field_width - 2 && y == right_paddle_y + i)
-                        symbol = '#';
+                    if (x == field_width - 2 && y == right_paddle_y + i) symbol = '#';
                     i++;
                 }
             }
