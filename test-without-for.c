@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-int field_weidth;
-int field_heigth;
+int field_width;
+int field_height;
 int paddle_size;
 int win_score;
 int ball_x;
@@ -15,17 +15,17 @@ int player2_score;
 int is_running;
 
 static void game_start(void) {
-    field_weidth = 80;
-    field_heigth = 25;
+    field_width = 80;
+    field_height = 25;
     paddle_size = 3;
     win_score = 21;
 
-    ball_x = field_weidth / 2;
-    ball_y = field_heigth / 2;
+    ball_x = field_width / 2;
+    ball_y = field_height / 2;
     ball_dir_x = 1;
     ball_dir_y = 1;
-    left_paddle_y = field_heigth / 2 - 1;
-    right_paddle_y = field_heigth / 2 - 1;
+    left_paddle_y = field_height / 2 - 1;
+    right_paddle_y = field_height / 2 - 1;
     player1_score = 0;
     player2_score = 0;
     is_running = 1;
@@ -34,15 +34,15 @@ static void game_start(void) {
 static void left_paddle_move(int dir) {
     left_paddle_y = left_paddle_y + dir;
     if (left_paddle_y < 1) left_paddle_y = 1;
-    if (left_paddle_y + paddle_size - 1 > field_heigth - 2)
-        left_paddle_y = field_heigth - 2 - paddle_size + 1;
+    if (left_paddle_y + paddle_size - 1 > field_height - 2)
+        left_paddle_y = field_height - 2 - paddle_size + 1;
 }
 
 static void right_paddle_move(int dir) {
     right_paddle_y = right_paddle_y + dir;
     if (right_paddle_y < 1) right_paddle_y = 1;
-    if (right_paddle_y + paddle_size - 1 > field_heigth - 2)
-        right_paddle_y = field_heigth - 2 - paddle_size + 1;
+    if (right_paddle_y + paddle_size - 1 > field_height - 2)
+        right_paddle_y = field_height - 2 - paddle_size + 1;
 }
 
 static int paddle_touch(int by, int py) {
@@ -53,8 +53,8 @@ static int paddle_touch(int by, int py) {
 }
 
 static void reset_ball(int dx) {
-    ball_x = field_weidth / 2;
-    ball_y = field_heigth / 2;
+    ball_x = field_width / 2;
+    ball_y = field_height / 2;
     ball_dir_x = dx;
     ball_dir_y = 1;
 }
@@ -63,7 +63,7 @@ static void game_step(void) {
     ball_x = ball_x + ball_dir_x;
     ball_y = ball_y + ball_dir_y;
 
-    if (ball_y <= 1 || ball_y >= field_heigth - 2) ball_dir_y = -ball_dir_y;
+    if (ball_y <= 1 || ball_y >= field_height - 2) ball_dir_y = -ball_dir_y;
 
     if (ball_x == 2) {
         if (paddle_touch(ball_y, left_paddle_y)) {
@@ -78,7 +78,7 @@ static void game_step(void) {
         }
     }
 
-    if (ball_x == field_weidth - 3) {
+    if (ball_x == field_width - 3) {
         if (paddle_touch(ball_y, right_paddle_y)) {
             ball_dir_x = -1;
         } else {
